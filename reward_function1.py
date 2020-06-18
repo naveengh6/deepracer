@@ -47,14 +47,18 @@ def reward_function(params):
     #Reward or penalize whether car is on left side of the track when turning left
     if direction_diff > 10:
         if is_left_of_center:
+            #Reward if on the left side
             reward += 1.0
         else:
+            #Penalize if on the right side
             reward *= 0.3
+    #Reward or penalize whether car is on right side of the track when turning right
     elif direction_diff < 10:
-        #Reward or penalize whether car is on right side of the track when turning right
         if not is_left_of_center:
+            #Reward if on the right side
             reward += 1.0
         else:
+            #Penalize if on the left side
             reward *= 0.3
     else:
         if distance_from_border >= 0.05:
