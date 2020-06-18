@@ -11,6 +11,7 @@ def reward_function(params):
     track_width = params['track_width']
     speed = params['speed']
     all_wheels_on_track = params['all_wheels_on_track']
+    steering = abs(params['steering_angle'])
 
 
     # Initialize the reward with typical value 
@@ -75,5 +76,10 @@ def reward_function(params):
     else:
         # High reward if the car stays on track and goes fast
         reward += 1.0
+
+    # Penalize if car steer too much to prevent zigzag
+    ABS_STEERING_THRESHOLD = 20.0
+    if steering > ABS_STEERING_THRESHOLD:
+        reward *= 0.8
 
     return reward
