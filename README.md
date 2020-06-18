@@ -2,6 +2,10 @@
 
 This repo is for holding hyper parameters and reward functions for aws deepracer
 
+Race track diagram for maintaining the car near the curve when turning to keep car as straight as possible and to reduce the steering angle to maximize the speed of the car.
+
+![re:invent 2018 track](re-invent-2018-track.jpg)
+
 |Hyperparameter|Value|
 |--------------|-----|
 |Gradient descent batch size|128|
