@@ -12,6 +12,7 @@ def reward_function(params):
     speed = params['speed']
     all_wheels_on_track = params['all_wheels_on_track']
     steering = abs(params['steering_angle'])
+    progress = params['progress']
 
 
     # Initialize the reward with typical value 
@@ -67,12 +68,22 @@ def reward_function(params):
         else:
             reward -= 1e-3
 
+    #Rewarding based on progress
+    if progress == 100:
+        reward += 100.0
+    elif progress >= 90 and progress < 100:
+        reward += 30.0
+    elif progress >= 70 and progress < 90:
+        reward += 10.0
+    else:
+        reward += 2.0
+
     if not all_wheels_on_track:
         # Penalize if the car goes off track
         reward -= 1e-3
     elif speed < (SPEED_THRESHOLD * 0.8):
         # Penalize if the car goes too slow
-        reward = 0.5
+        reward *= 0.5
     else:
         # High reward if the car stays on track and goes fast
         reward += 1.0
