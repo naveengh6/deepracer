@@ -14,12 +14,21 @@ def reward_function(params):
     steering = abs(params['steering_angle'])
     progress = params['progress']
 
-
     # Initialize the reward with typical value 
     reward = 1.0
 
     # Set the speed threshold based your action space 
-    SPEED_THRESHOLD = 1.0 
+    SPEED_THRESHOLD = 1.0
+
+    #Rewarding based on progress
+    if progress == 100:
+        reward += 100.0
+    elif progress >= 90 and progress < 100:
+        reward += 30.0
+    elif progress >= 70 and progress < 90:
+        reward += 10.0
+    else:
+        reward += 2.0
 
     # Calculate the direction of the center line based on the closest waypoints
     next_point = waypoints[closest_waypoints[1]]
@@ -47,7 +56,7 @@ def reward_function(params):
         reward *= 0.5
     
     #Reward or penalize whether car is on left side of the track when turning left
-    if direction_diff > 10:
+    if direction_diff > 5:
         if is_left_of_center:
             #Reward if on the left side
             reward += 1.0
@@ -55,7 +64,7 @@ def reward_function(params):
             #Penalize if on the right side
             reward *= 0.3
     #Reward or penalize whether car is on right side of the track when turning right
-    elif direction_diff < 10:
+    elif direction_diff < 5:
         if not is_left_of_center:
             #Reward if on the right side
             reward += 1.0
@@ -64,29 +73,22 @@ def reward_function(params):
             reward *= 0.3
     else:
         if distance_from_border >= 0.05:
-            reward += 1.0
+            #Reward if maintaining the distance from border
+            reward += 2.0
         else:
-            reward -= 1e-3
-
-    #Rewarding based on progress
-    if progress == 100:
-        reward += 100.0
-    elif progress >= 90 and progress < 100:
-        reward += 30.0
-    elif progress >= 70 and progress < 90:
-        reward += 10.0
-    else:
-        reward += 2.0
+            #Penalizing if too close to the border
+            reward *= 0.3
 
     if not all_wheels_on_track:
         # Penalize if the car goes off track
-        reward -= 1e-3
-    elif speed < (SPEED_THRESHOLD * 0.8):
+        reward *= 0.35
+    
+    if speed < (SPEED_THRESHOLD * 0.8):
         # Penalize if the car goes too slow
         reward *= 0.5
     else:
         # High reward if the car stays on track and goes fast
-        reward += 1.0
+        reward += 10.0
 
     # Penalize if car steer too much to prevent zigzag
     ABS_STEERING_THRESHOLD = 20.0
