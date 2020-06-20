@@ -18,7 +18,7 @@ def reward_function(params):
     reward = 1.0
 
     # Set the speed threshold based your action space 
-    SPEED_THRESHOLD = 1.0
+    SPEED_THRESHOLD = 2.0
 
     #Rewarding based on progress
     if progress == 100:
