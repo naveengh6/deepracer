@@ -18,7 +18,7 @@ def reward_function(params):
     reward = 1.0
 
     # Set the speed threshold based your action space 
-    SPEED_THRESHOLD = 2.0
+    SPEED_THRESHOLD = 1.0
 
     #Rewarding based on progress
     if progress == 100:
@@ -31,19 +31,19 @@ def reward_function(params):
         reward += 2.0
 
     # Calculate 3 markers that are increasingly further away from the center line
-    marker_1 = 0.1 * track_width
-    marker_2 = 0.25 * track_width
-    marker_3 = 0.5 * track_width
+    #marker_1 = 0.1 * track_width
+    #marker_2 = 0.25 * track_width
+    #marker_3 = 0.5 * track_width
 
     # Give higher reward if the car is closer to center line and vice versa
-    if distance_from_center <= marker_1:
-        reward += 10
-    elif distance_from_center <= marker_2:
-        reward += 5
-    elif distance_from_center <= marker_3:
-        reward += 1
-    else:
-        reward -= 10  # likely crashed/ close to off track
+    #if distance_from_center <= marker_1:
+    #    reward += 10
+    #elif distance_from_center <= marker_2:
+    #    reward += 5
+    #elif distance_from_center <= marker_3:
+    #    reward += 1
+    #else:
+    #    reward -= 10  # likely crashed/ close to off track
 
     # Calculate the direction of the center line based on the closest waypoints
     next_point = waypoints[closest_waypoints[1]]
@@ -79,7 +79,7 @@ def reward_function(params):
             #Penalize if on the right side
             reward *= 0.3
     #Reward or penalize whether car is on right side of the track when turning right
-    elif direction_diff < 5:
+    elif direction_diff < -5:
         if not is_left_of_center:
             #Reward if on the right side
             reward += 1.0
